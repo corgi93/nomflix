@@ -4,6 +4,7 @@ Home의 state(상태값)을 가진 모든 리액트 컴포넌트
 */
 import React from "react";
 import HomePresenter from "./HomePresenter";
+import { movieApi } from "api";
 
 export default class extends React.Component {
   // data들
@@ -12,12 +13,26 @@ export default class extends React.Component {
     upcoming: null,
     popular: null,
     // error 발생과 loading이 됬는지 확인을 위해 추가해주자
-    error : null,
-    loading :true
+    error: null,
+    loading: true
   };
 
-/* add login , get api, error handling 추가 */
-  
+  async componentDidMount() {
+    try {
+      movieApi.nowPlaying();
+    } catch (error) {
+      this.setState({
+        error : "Can't find movies informations"
+      })
+    } finally {
+      this.setState({
+        loading : false
+      })
+    }
+  }
+
+  /* add login , get api, error handling 추가 */
+
   // 해당 컴포넌트 렌더링
   render() {
     // 객체 비구조화 할당 (obejct destructuring)
