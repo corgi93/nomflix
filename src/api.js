@@ -33,7 +33,7 @@ export const movieApi = {
 export const tvApi = {
     topRated : () => api.get("tv/top"),
     popular : ()=> api.get("tv/popular"),
-    airing : () => api.get("tv/airing_today"),
+    airingToday : () => api.get("tv/airing_today"),
     // tv 디테일 -  append_to_response를 이용해 img나 video를 가져오기
     showDetail: (id) => api.get(`tv/${id}`, {
         params: {
