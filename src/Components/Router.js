@@ -5,16 +5,18 @@ import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-d
 import Home from "Routes/Home";
 import TV from "Routes/TV";
 import Search from "Routes/Search";
+import Header from "Components/Header"
 
 export default () => (
     <Router>
-        <Switch>
-            <Route path="/" exact component={ Home }/>
-            <Route path="/tv" exact component={ TV } />
-            <Route path="/search" exact component={ Search } />
+        <Header />
+            <Switch>
+                <Route path="/" exact component={ Home }/>
+                <Route path="/tv" exact component={ TV } />
+                <Route path="/search" exact component={ Search } />
 
-            {/* 리액트에서 Redirect */}
-            <Redirect from="*" to="/" />
-        </Switch>
+                {/* 리액트에서 Redirect */}
+                <Redirect from="*" to="/" />
+            </Switch>
     </Router>
 );
