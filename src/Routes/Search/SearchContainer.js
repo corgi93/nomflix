@@ -11,13 +11,11 @@ export default class extends React.Component {
     error: null
   };
 
-  componentDidMount() {
-    this.handleSubmit();
-  }
-
   // 사용자 검색 - form을 submit한다. - handleSubmit
   // 사용자 입력(searchTerm)이 공백이 아닌 걸 체크 후 searche함수 실행
   handleSubmit = event => {
+    // event의 기본 동작을 막음
+    event.preventDefault();
     const { searchTerm } = this.state;
     if (searchTerm !== "") {
       this.searchByTerm();
@@ -25,15 +23,13 @@ export default class extends React.Component {
   };
 
   // input 입력이 안되는데 update해주는 function을 하나 작성
-  updateTerm = (event) => {
-    const { target : {value} } = event;
-
-    // value는 event에 하나씩 찍히므로 searchTerm state에 value 이벤트들을 저장
+  updateTerm = event => {
+    const {
+      target: { value }
+    } = event;
     this.setState({
-      searchTerm : value
-    })
-    console.log(value)
-      
+      searchTerm: value
+    });
   };
 
   // term으로 검색
@@ -69,23 +65,15 @@ export default class extends React.Component {
     }
   };
 
-  render() {
-    const {
-      movieResults,
-      tvResults,
-      searchTerm,
-      loading,
-      error,
-      updateTerm
-    } = this.state;
-
+   render() {
+    const { movieResults, tvResults, searchTerm, loading, error } = this.state;
     return (
       <SearchPresenter
         movieResults={movieResults}
         tvResults={tvResults}
-        searchTerm={searchTerm}
         loading={loading}
         error={error}
+        searchTerm={searchTerm}
         handleSubmit={this.handleSubmit}
         updateTerm={this.updateTerm}
       />
