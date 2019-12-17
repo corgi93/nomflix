@@ -19,15 +19,36 @@ export default class extends React.Component {
 
   async componentDidMount() {
     try {
-      movieApi.nowPlaying();
+      // await하지 않으면 promise로 일 끝날 때 까지 대기하라고 뜬다
+      // 3개의 데이터를 setState
+      // object destructuring (객체 비구조화 할당)으로 선언
+      const {
+        data: { results: nowPlaying }
+      } = await movieApi.nowPlaying();
+
+      const {
+        data: { results: upcoming }
+      } = await movieApi.upcoming();
+
+      const {
+        data: { results: popular }
+      } = await movieApi.popular();
+      
+      this.setState({
+        //nowPlaging : nowPlaying을 간결하게 인식
+        nowPlaying,
+        upcoming,
+        popular
+      })
+      
     } catch (error) {
       this.setState({
-        error : "Can't find movies informations"
-      })
+        error: "Can't find movies informations"
+      });
     } finally {
       this.setState({
-        loading : false
-      })
+        loading: false
+      });
     }
   }
 
