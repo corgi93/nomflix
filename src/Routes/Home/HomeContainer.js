@@ -33,7 +33,7 @@ export default class extends React.Component {
       const {
         data: { results: popular }
       } = await movieApi.popular();
-      
+
       this.setState({
         //nowPlaging : nowPlaying을 간결하게 인식
         nowPlaying,
