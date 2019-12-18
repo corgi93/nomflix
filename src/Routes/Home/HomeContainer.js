@@ -61,7 +61,7 @@ export default class extends React.Component {
     return (
       <HomePresenter
         nowPlaying={nowPlaying}
-        upcoming={upcoming}
+        upcoming={upcoming} 
         popular={popular}
         error={error}
         loading={loading}

@@ -1,44 +1,94 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import Helmet from "react-helmet";
 import Section from "Components/Section";
-import Loader from "../../Components/Loader";
-import Error from "Components/Error";
+import Loader from "Components/Loader";
+import Message from "Components/Message";
+import Poster from "Components/Poster";
 
 const Container = styled.div`
   padding: 0px 10px;
 `;
 
 // HomeContainer에서 받은 props
-const HomePresenter = ({ nowPlaying, upcoming, popular, loading, error }) =>
-  loading ? (<Loader />) : (
-    <Container>
-      {nowPlaying && nowPlaying.length > 0 && (
-        // object에 map을 이용해 title뽑아오기
-        <Section title="Now Playing">
-          {nowPlaying.map(movie => <span key={movie.id}>{movie.title}</span>)}
-        </Section>
-      )}
+const HomePresenter = ({ nowPlaying, upcoming, popular, loading, error }) => (
+  <>
+    <Helmet>
+      <title>Movies | Nomflix</title>
+    </Helmet>
+    {loading ? (
+      <Loader />
+    ) : (
+      <Container>
+        <Helmet>
+          <title>Movies | Nomflix</title>
+        </Helmet>
+        {nowPlaying && nowPlaying.length > 0 && (
+          // object에 map을 이용해 title뽑아오기
+          <Section title="Now Playing">
+            {nowPlaying.map(movie => (
+              <Poster
+                // movie.api의객체 key들
+                key={movie.id}
+                id={movie.id}
+                title={movie.original_title}
+                rating={movie.vote_average}
+                year={movie.release_date && movie.release_date.substring(0, 4)}
+                imageUrl={movie.poster_path}
+                isMovie={true}
+              />
+            ))}
+          </Section>
+        )}
 
-      {upcoming && upcoming.length > 0 && (
-        // object에 map을 이용해 title뽑아오기
-        <Section title="upcoming Movies">
-          {upcoming.map(movie => <span key={movie.id}>{movie.title}</span>)}
-        </Section>
-      )}
+        {upcoming && upcoming.length > 0 && (
+          // object에 map을 이용해 title뽑아오기
+          <Section title="upcoming Movies">
+            {upcoming.map(movie => (
+              // 모든 element는 key가 필요
+              <Poster
+                // movie.api의객체 key들
+                key={movie.id}
+                id={movie.id}
+                title={movie.original_title}
+                rating={movie.vote_average}
+                year={movie.release_date && movie.release_date.substring(0, 4)}
+                imageUrl={movie.poster_path}
+                isMovie={true}
+              />
+            ))}
+          </Section>
+        )}
 
-      {popular && popular.length > 0 && (
-        // object에 map을 이용해 title뽑아오기
-        <Section title="Popular Movies">
-          {popular.map(movie => <span key={movie.id}>{movie.title}</span>)}
-        </Section>
-      )}
+        {popular && popular.length > 0 && (
+          // object에 map을 이용해 title뽑아오기
+          <Section title="Popular Movies">
+            {popular.map(movie => (
+              <>
+                <Poster
+                  // movie.api의객체 key들
+                  key={movie.id}
+                  id={movie.id}
+                  title={movie.original_title}
+                  rating={movie.vote_average}
+                  year={
+                    movie.release_date && movie.release_date.substring(0, 4)
+                  }
+                  imageUrl={movie.poster_path}
+                  isMovie={true}
+                />
+              </>
+            ))}
+          </Section>
+        )}
 
-      {error && <Error text={error}/>}
-    </Container>
-  );
+        {error && <Message text={error} color="#e74c3c" />}
+      </Container>
+    )}
+  </>
+);
 
-// TVContainer에서 보내준 props! 5가지
 HomePresenter.propTypes = {
   nowPlaying: PropTypes.array,
   popular: PropTypes.array,

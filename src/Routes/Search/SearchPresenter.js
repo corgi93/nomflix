@@ -3,6 +3,9 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Loader from "Components/Loader";
 import Section from "Components/Section";
+import Message from "Components/Message";
+import Poster from "../../Components/Poster";
+import Helmet from "react-helmet";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -30,7 +33,10 @@ const SearchPresenter = ({
   updateTerm
 }) => (
   <Container>
-    <Form onSubmit={handleSubmit}>
+  <Helmet>
+    <title>Search | Nomflix</title>
+  </Helmet>
+  <Form onSubmit={handleSubmit}>
       <Input
         placeholder="Search Movies or TV shows..."
         value={searchTerm}
@@ -42,22 +48,48 @@ const SearchPresenter = ({
       <Loader />
     ) : (
       <Fragment>
+        {/* term이 들어간 영화출력 */}
         {movieResults && movieResults.length > 0 && (
           <Section title="Movie Results">
             {movieResults.map(movie => (
-                <span key={movie.id}>{movie.title}</span>
+              <Poster
+                key={movie.id}
+                id={movie.id}
+                title={movie.original_title}
+                rating={movie.vote_average}
+                year={movie.release_date && movie.release_date.substring(0, 4)}
+                imageUrl={movie.poster_path}
+              />
             ))}
           </Section>
         )}
 
+        {/* term이 들어간 tv show출력 */}
         {tvResults && tvResults.length > 0 && (
           <Section title="TV show Results">
-            {tvResults.map(show => (
-                <span key={show.id}>{show.name}</span>
+            {tvResults.map(movie => (
+              <Poster
+                key={movie.id}
+                id={movie.id}
+                imageUrl={movie.poster_path}
+                title={movie.original_name}
+                rating={movie.vote_average}
+                year={
+                  movie.first_air_date && movie.first_air_date.substring(0, 4)
+                }
+              />
             ))}
           </Section>
         )}
 
+        {error && <Message text={error} color="#e74c3c" />}
+
+        {tvResults &&
+          movieResults &&
+          tvResults.length === 0 &&
+          movieResults.length === 0 && (
+            <Message text={`Nothing found for ${searchTerm}`} color="#95a5a6" />
+          )}
       </Fragment>
     )}
   </Container>

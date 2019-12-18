@@ -35,17 +35,19 @@ export default class extends React.Component {
 
     let result = null;
     try {
-      if(isMovie){
+      if (isMovie) {
         // 위에서 let으로 선언했기 때문에
-        ({data: result} = await movieApi.movieDetail(parsedId));
-      
-      }else {
-        ({data : result} = await tvApi.showDetail(parsedId));
+        ({ data: result } = await movieApi.movieDetail(parsedId));
+      } else {
+        ({ data: result } = await tvApi.showDetail(parsedId));
       }
-    }catch {
-      this.setState({ error : "Can't find anything" })        
-    }finally {
-      this.setState({ loading: false, result });
+    } catch {
+      this.setState({ error: "Can't find anything" });
+    } finally {
+      this.setState({
+        loading: false,
+        result
+      });
     }
   }
 
